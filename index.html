@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Transfer files directly between Android devices and Android TV over Wi-Fi. No cloud, no account, no data leaves your network." />
+  <title>CastDrop — No cloud. No account. Just Wi-Fi.</title>
+  <style>
+    :root {
+      --bg:         #0d0f14;
+      --surface:    #161921;
+      --border:     #252a35;
+      --accent:     #4f8ef7;
+      --accent-dim: #1e3560;
+      --text:       #dde3f0;
+      --muted:      #7a8499;
+      --radius:     10px;
+      --font-ui:    -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,15,20,0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .wordmark {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+    }
+
+    .wordmark span { color: var(--accent); }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.01em;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 88px 32px 80px;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #252a35 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(79,142,247,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 22px;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 38px;
+      line-height: 1.7;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-play {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 13px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-play:hover { background: #3a7de8; transform: translateY(-1px); }
+    .btn-play:active { transform: translateY(0); }
+    .btn-play svg { width: 19px; height: 19px; flex-shrink: 0; }
+
+    .hero-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    /* ── Features ── */
+    .features {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 32px;
+    }
+
+    .features-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .features h2 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      letter-spacing: -0.025em;
+      margin-bottom: 48px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      transition: border-color 0.2s;
+    }
+
+    .feature-card:hover { border-color: rgba(79,142,247,0.4); }
+
+    .feature-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--accent-dim);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .feature-icon svg { width: 18px; height: 18px; }
+
+    .feature-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Trust strip ── */
+    .trust {
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .trust-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .trust h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .trust p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .trust-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ec97a;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav      { padding: 16px 20px; }
+      .hero    { padding: 60px 20px 56px; }
+      .features{ padding: 52px 20px; }
+      .trust   { padding: 40px 20px; }
+      footer   { padding: 28px 20px; }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wordmark">Cast<span>Drop</span></div>
+  <a href="privacy_policy.html">Privacy Policy</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="badge">Android &amp; Android TV</div>
+    <h1>No cloud. No account.<br>Just&nbsp;Wi&#8209;Fi.</h1>
+    <p class="hero-desc">Transfer files directly between Android devices and Android TV over your local Wi-Fi network. No cloud storage, no account required, no data leaves your home network.</p>
+    <div class="cta-row">
+      <a href="#" class="btn-play" aria-label="Get CastDrop on Google Play">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3.18 23.76a2 2 0 0 0 2.04-.22l12.02-6.94-2.96-2.96L3.18 23.76zM.79 1.01C.3 1.5 0 2.27 0 3.28v17.44c0 1.01.3 1.78.79 2.27l.12.11 9.76-9.76v-.23L.91.9.79 1.01zM21.4 10.37l-3.12-1.8-3.3 3.3 3.3 3.3 3.13-1.81c.89-.51.89-1.35 0-1.99zM5.22.46 17.24 7.4l-2.96 2.96L5.22.46z"/>
+        </svg>
+        Get it on Google Play
+      </a>
+    </div>
+    <p class="hero-note">Free &middot; No sign-up &middot; Android 8.0+</p>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-inner">
+    <span class="section-tag">Features</span>
+    <h2>Everything you need. Nothing you don't.</h2>
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div class="feature-title">Works with Android TV</div>
+        <p class="feature-body">Send files straight to your TV — photos, videos, anything — without a USB cable or cloud upload.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="feature-title">No sign-up, no cloud</div>
+        <p class="feature-body">Files go device to device over Wi-Fi. No account, no cloud service, no data leaves your network.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <div class="feature-title">Background receiving</div>
+        <p class="feature-body">Accept incoming files even when the app is closed. CastDrop listens in the background so you never miss a transfer.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="trust-inner">
+    <h3>Your data stays at home</h3>
+    <p>CastDrop is built for privacy by design. No analytics, no advertising, no third-party data collection — the only external service is Sentry for anonymised crash reports.</p>
+    <div class="trust-pills">
+      <div class="pill"><span class="pill-dot" aria-hidden="true"></span>No account required</div>
+      <div class="pill"><span class="pill-dot" aria-hidden="true"></span>No ads or tracking</div>
+      <div class="pill"><span class="pill-dot" aria-hidden="true"></span>Local network only</div>
+      <div class="pill"><span class="pill-dot" aria-hidden="true"></span>No file upload to cloud</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>
+    &copy; 2026 CastDrop &nbsp;&middot;&nbsp;
+    <a href="privacy_policy.html">Privacy Policy</a> &nbsp;&middot;&nbsp;
+    <a href="mailto:privacy@castdrop.app">privacy@castdrop.app</a>
+  </p>
+</footer>
+
+</body>
+</html>
